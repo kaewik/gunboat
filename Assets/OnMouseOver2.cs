@@ -23,16 +23,22 @@ public class OnMouseOver2 : MonoBehaviour
         var spriteTexture = m_Renderer.sprite.texture;
         var spriteX = m_Renderer.sprite.texture.width;
         var spriteY = m_Renderer.sprite.texture.height;
+        Debug.Log($"height: {spriteY}, width: {spriteX}");
         for (var x = 0; x < spriteX; x++) {
             for (var y = 0; y < spriteY; y++) {
+                var pixelsPerUnit = m_Renderer.sprite.pixelsPerUnit;
                 var localPosition2D = new Vector2(m_Renderer.transform.localPosition.x, m_Renderer.transform.localPosition.y);
-                var localPosition = localPosition2D + new Vector2(x / m_Renderer.sprite.pixelsPerUnit, y / m_Renderer.sprite.pixelsPerUnit);
+                Debug.Log($"localPosition2D: {localPosition2D}");
+                var pixelPosition = new Vector2(x / pixelsPerUnit, y / pixelsPerUnit);
+                Debug.Log($"pixelPosition: {pixelPosition}");
+                var localPosition = localPosition2D + pixelPosition;
                 var closestPoint = m_Collider.ClosestPoint(localPosition);
                 if (closestPoint == localPosition) {
                     var highlightColor = ClampColor(spriteTexture.GetPixel(x, y) * m_ColorMultiplier);
                     spriteTexture.SetPixel(x, y, Color.red);
                     Debug.Log($"spriteTexture.SetPixel({x}, {y}, {highlightColor})");
                 }
+                spriteTexture.SetPixel(x, y, Color.red);
             }
         }
         spriteTexture.Apply();
